@@ -3,6 +3,7 @@ import io.github.ludovicianul.yeextreme.ci.BuildExtractorMapping;
 import io.github.ludovicianul.yeextreme.ci.BuildStatus;
 import io.github.ludovicianul.yeextreme.config.PropertiesHolder;
 import io.github.ludovicianul.yeextreme.config.ReservedColor;
+import io.github.ludovicianul.yeextreme.config.RestClientProvider;
 import io.github.ludovicianul.yeextreme.config.Telnet;
 import io.github.ludovicianul.yeextreme.model.Color;
 import io.github.ludovicianul.yeextreme.model.Task;
@@ -79,14 +80,14 @@ public class YeextremeApplication {
 
     private static String checkIfAlwaysTaskOverrridesBestCandidate(String colorName) {
         if (PropertiesHolder.alwaysTask != null) {
+            String[] details = PropertiesHolder.alwaysTask.split(",");
             try {
-
-                RestTemplate template = new RestTemplate();
-                template.headForHeaders(new URI(PropertiesHolder.alwaysTask.getUrl()));
+                RestTemplate template = RestClientProvider.INSTANCE;
+                template.headForHeaders(new URI(details[1]));
             } catch (Exception e) {
                 LOGGER.warn("provided always task [{}] is unavailable. overwriting color previous color [{}] with [{}]",
-                        PropertiesHolder.alwaysTask, colorName, PropertiesHolder.alwaysTask.getColorName());
-                colorName = PropertiesHolder.alwaysTask.getColorName();
+                        PropertiesHolder.alwaysTask, colorName, details[0], e);
+                colorName = details[0];
             }
         }
         return colorName;

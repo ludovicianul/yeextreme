@@ -36,7 +36,7 @@ public class Task implements Comparable<Task> {
 
             return task;
         } catch (Exception e) {
-            LOGGER.error("something went wrong while parsing {}", input);
+            LOGGER.error("something went wrong while parsing {}, details {}", input, e.getMessage());
         }
         return null;
     }

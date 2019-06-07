@@ -26,7 +26,7 @@ public class PropertiesHolder {
 
     public static Optional<Task> bestCandidate;
 
-    public static Task alwaysTask;
+    public static String alwaysTask;
 
     public static void reloadProperties(String location) throws URISyntaxException, IOException {
         LOGGER.info("reloading properties from {}", location);
@@ -47,13 +47,12 @@ public class PropertiesHolder {
     }
 
     private static void parseAlwaysTask(List<String> configLines) {
-        Optional<String> alwaysString = configLines.stream().filter(line -> line.toLowerCase().equals("task_always")).findFirst();
-        if (alwaysString.isPresent()) {
-            alwaysTask = Task.fromString(alwaysString.get());
-            if (alwaysTask != null && !alwaysTask.isUrlTask()) {
-                LOGGER.error("task_always must be a value url [{}]. it will be ignored...", alwaysTask);
-                alwaysTask = null;
-            }
+        Optional<String> alwaysString = configLines.stream().filter(line -> line.toLowerCase().startsWith("always_monitor")).findFirst();
+        if (alwaysString.isPresent() && alwaysString.get().split("=").length == 2) {
+            alwaysTask = alwaysString.get();
+            LOGGER.info("found always_monitor task {}", alwaysTask.split("=")[1]);
+        } else {
+            LOGGER.error("always_monitor task has invalid syntax or missing");
         }
     }
 
