@@ -49,7 +49,7 @@ The shorter time intervals will take priority over longer time intervals.
 For example if you have a task configured between 10:00 and 18:00 and another one between 10:15-10:45, the later will take priority during that interval.
 The monitoring will resume to the initial task afterwards.
 
-# always_monitor task#
+# always_monitor task #
 You can also configure a special task called ```always_monitor``` with the following syntax: ```COLOR,URL```. 
 This will be checked for availability periodically and every time the URL is down the light bulb will turn into the specified color overriding any existing setup.
 This is very useful when you have some critical resources you want to get notified about.
