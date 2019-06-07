@@ -111,7 +111,7 @@ public class Task implements Comparable<Task> {
 
     @Override
     public int compareTo(Task o) {
-        return (int) (this.end.toSecondOfDay() - this.start.toNanoOfDay() - (o.end.toSecondOfDay() - o.start.toSecondOfDay()));
+        return (int) ((this.end.toSecondOfDay() - this.start.toSecondOfDay()) - (o.end.toSecondOfDay() - o.start.toSecondOfDay()));
     }
 
     public boolean isUrlTask() {
