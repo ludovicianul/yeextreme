@@ -26,7 +26,7 @@ public class Color {
             String[] details = splitProperty(allDetails[1]);
 
             Color color = new Color();
-            color.name = allDetails[0].toUpperCase();
+            color.name = allDetails[0].toUpperCase().replaceAll("C_", "");
             color.r = Integer.parseInt(details[0]);
             color.g = Integer.parseInt(details[1]);
             color.b = Integer.parseInt(details[2]);
