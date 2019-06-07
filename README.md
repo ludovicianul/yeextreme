@@ -1,6 +1,6 @@
 # Yeextreme #
 In the era of overwhelming digital notifications (Slack, Teams, Mobile Phones, Emails, etc) I'm a strong believer in visual and instant feedback.
-This is why I think Extreme Feedback Devices are essential for every development team. 
+This is why I think Extreme Feedback Devices are essential for every development team. Especially in distributed scenarios when you have lots of teams working on the same codebase.
 
 **Yeextreme** is a simple application than can transform a [Xiaomi Yeelight RGB light bulb](https://www.yeelight.com/en_US/product/wifi-led-c) into a configurable eXtreme Feedback Device.
 
@@ -10,7 +10,7 @@ This app has some flexible ways to monitor and define color states and Continuou
 - define time-based monitoring for different CI jobs
 - have simple time-based events that display a fix color (useful for team events)
 - define custom colors associated to CI jobs or events
-- some plugins integrate with IFTT webhooks which sometimes are unreliable or not easy configurable
+- some plugins integrate with IFTT webhooks which sometimes are unreliable or not configurable
 
 # Configuration #
 **Yeextreme** is driven by a simple properties configuration file. The file can contain the following items:
@@ -75,6 +75,8 @@ There are situations when you will run **Yeextreme** on a remote box. You can te
 
 # Running the app ##
 **Yeextreme** is built as an executable jar. Just do: ```./yeelight-1.0.jar``` (or ```java -jar yeelight-1.0.jar```).
+Check the Releases tab for latest version. Latest version here: https://github.com/ludovicianul/yeextreme/releases/download/1.0/yeextreme-1.0.jar
+
 
 # Build from sources #
 You must first run ```mvn initialize``` in order to deploy the ```yapi``` in library in the local repo.

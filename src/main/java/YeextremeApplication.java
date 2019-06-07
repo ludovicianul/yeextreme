@@ -8,9 +8,11 @@ import io.github.ludovicianul.yeextreme.model.Color;
 import io.github.ludovicianul.yeextreme.model.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.client.RestTemplate;
 
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URI;
 import java.time.LocalTime;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,13 +21,13 @@ public class YeextremeApplication {
     private static final Logger LOGGER = LoggerFactory.getLogger(YeextremeApplication.class);
     private static final ExecutorService executor = Executors.newCachedThreadPool();
 
-    public static final String MAX_CONN_ATTEMPTS_PROP = "maxYeeLightConnectionAttempts";
-    public static final String TELNET_PORT_PROP = "telnetPort";
-    public static final String SECONDS_TO_PAUSE_CHECKING = "secondsBetweenChecks";
+    private static final String MAX_CONN_ATTEMPTS_PROP = "maxYeeLightConnectionAttempts";
+    private static final String TELNET_PORT_PROP = "telnetPort";
+    private static final String SECONDS_TO_PAUSE_CHECKING = "secondsBetweenChecks";
 
-    private static String MAX_CONN_ATTEMPTS = "10";
-    private static String DEFAULT_TELNET_PORT = "8888";
-    private static String MILLIS_TO_PAUSE_CHECLING = "15";
+    private static final String MAX_CONN_ATTEMPTS = "10";
+    private static final String DEFAULT_TELNET_PORT = "8888";
+    private static final String MILLIS_TO_PAUSE_CHECLING = "15";
 
     public static void main(String[] args) throws Exception {
         String propsLocation = null;
@@ -37,12 +39,12 @@ public class YeextremeApplication {
         startMonitoring();
     }
 
-    public static void reloadProps(String location) throws Exception {
+    private static void reloadProps(String location) throws Exception {
         PropertiesHolder.reloadProperties(location);
     }
 
 
-    public static void startMonitoring() throws Exception {
+    private static void startMonitoring() throws Exception {
         int secondsToPause = Integer.parseInt(PropertiesHolder.getOtherProperties().getProperty(SECONDS_TO_PAUSE_CHECKING, MILLIS_TO_PAUSE_CHECLING)) * 1000;
         LOGGER.info("millis to pause between checks {}", secondsToPause);
 
@@ -70,7 +72,24 @@ public class YeextremeApplication {
             }
         }
 
+        colorName = checkIfAlwaysTaskOverrridesBestCandidate(colorName);
+
         sendColorToBulb(colorName);
+    }
+
+    private static String checkIfAlwaysTaskOverrridesBestCandidate(String colorName) {
+        if (PropertiesHolder.alwaysTask != null) {
+            try {
+
+                RestTemplate template = new RestTemplate();
+                template.headForHeaders(new URI(PropertiesHolder.alwaysTask.getUrl()));
+            } catch (Exception e) {
+                LOGGER.warn("provided always task [{}] is unavailable. overwriting color previous color [{}] with [{}]",
+                        PropertiesHolder.alwaysTask, colorName, PropertiesHolder.alwaysTask.getColorName());
+                colorName = PropertiesHolder.alwaysTask.getColorName();
+            }
+        }
+        return colorName;
     }
 
     private static void sendColorToBulb(String colorName) throws Exception {

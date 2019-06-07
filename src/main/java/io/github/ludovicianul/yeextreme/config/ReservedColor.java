@@ -7,7 +7,7 @@ public enum ReservedColor {
     BLUE(0, 0, 255, 80, true),
     WHITE(254, 254, 254, 80, false);
 
-    private Color color;
+    private final Color color;
 
     ReservedColor(int r, int g, int b, int brightness, boolean pulse) {
         color = new Color(this.name(), r, g, b, brightness, pulse);

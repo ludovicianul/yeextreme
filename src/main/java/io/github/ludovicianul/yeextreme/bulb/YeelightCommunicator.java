@@ -31,12 +31,12 @@ public class YeelightCommunicator {
         String port = PropertiesHolder.getOtherProperties().getProperty(YEELIGHT_PORT, "55443");
 
         if (StringUtils.isEmpty(ipAddress)) {
-            throw new IllegalArgumentException("Yeelight IP address must be defined!!!");
+            throw new IllegalArgumentException("yeelight IP address must be defined!!!");
         }
         try {
             device = new YeelightDevice(ipAddress, Integer.parseInt(port));
         } catch (Exception e) {
-            throw new IllegalArgumentException("Cannot communicate with the device", e);
+            throw new IllegalArgumentException("cannot communicate with the device", e);
         }
     }
 
@@ -57,9 +57,9 @@ public class YeelightCommunicator {
      * @param r red
      * @param g green
      * @param b blue
-     * @throws Exception
+     * @throws Exception in case something goes wrong while communicating with the Yeelight Device
      */
-    public static void startFlow(int r, int g, int b) throws Exception {
+    private static void startFlow(int r, int g, int b) throws Exception {
         YeelightFlow yeelightFlow = new YeelightFlow(YeelightFlow.INFINITE_COUNT, YeelightFlowAction.RECOVER);
         YeelightColorTransition c1 = new YeelightColorTransition(r, g, b, 1000);
         YeelightSleepTransition sleep = new YeelightSleepTransition(1000);

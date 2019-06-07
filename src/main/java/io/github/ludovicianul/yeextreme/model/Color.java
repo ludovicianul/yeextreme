@@ -16,8 +16,8 @@ public class Color {
     /**
      * Complete format for a color entry is: c_name=int,int,int,int,boolean
      *
-     * @param input
-     * @return
+     * @param input line from the property file
+     * @return a valid color is the provided line complies with the syntax or null otherwise
      */
     public static Color fromString(String input) {
         try {
@@ -61,8 +61,7 @@ public class Color {
         return allDetails;
     }
 
-    public Color() {
-
+    private Color() {
     }
 
     public Color(String name, int r, int g, int b, int brightness, boolean pulse) {

@@ -15,24 +15,23 @@ import java.net.Socket;
 public class Telnet implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(Telnet.class);
 
-    private Socket skt;
+    private final Socket skt;
 
     public Telnet(Socket srv) {
         this.skt = srv;
     }
 
     public void run() {
-        LOG.info("I'm being managed, baby!!!");
-
+        LOG.info("new connection");
         try (BufferedReader br = new BufferedReader(new InputStreamReader(skt.getInputStream()));
-             PrintWriter pw = new PrintWriter(skt.getOutputStream(), true);) {
-            pw.println("Yes, Master: ");
+             PrintWriter pw = new PrintWriter(skt.getOutputStream(), true)) {
+            pw.println("yes, master: ");
 
             String input;
 
             while (!skt.isClosed() && (input = br.readLine()) != null) {
                 String received = this.sanitizeInput(input);
-                String commands[] = this.getCommands(received);
+                String[] commands = this.getCommands(received);
 
                 if (this.weHaveCommands(commands)) {
                     switch (commands[0]) {
@@ -57,7 +56,7 @@ public class Telnet implements Runnable {
                 }
             }
 
-            LOG.info("Session closed!");
+            LOG.info("session closed!");
 
         } catch (Exception e) {
             LOG.error("reply to master failed!", e);
@@ -101,7 +100,7 @@ public class Telnet implements Runnable {
     }
 
     private String sanitizeInput(String input) {
-        if (input != null && input.indexOf("\b") != -1) {
+        if (input != null && input.contains("\b")) {
             input = input.replaceAll("^\b+|[^\b]\b", "");
         }
 
@@ -112,9 +111,9 @@ public class Telnet implements Runnable {
         LOG.info("state requested");
         final ObjectMapper mapper = new ObjectMapper();
         try {
-            pw.println(mapper.writeValueAsString(PropertiesHolder.bestCandidate.orElseGet(() -> Task.empty())));
+            pw.println(mapper.writeValueAsString(PropertiesHolder.bestCandidate.orElseGet(Task::empty)));
         } catch (Exception e) {
-            // we can return a dummy value here..
+            pw.println("error when getting state!");
             LOG.warn("error when getting state!", e);
         }
     }

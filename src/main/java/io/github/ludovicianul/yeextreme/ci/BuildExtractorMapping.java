@@ -7,7 +7,7 @@ package io.github.ludovicianul.yeextreme.ci;
 public enum BuildExtractorMapping {
     JENKINS(new JenkinsBuildExtractor());
 
-    private BuildInfoExtractor buildInfoExtractor;
+    private final BuildInfoExtractor buildInfoExtractor;
 
     BuildExtractorMapping(BuildInfoExtractor infoExtractor) {
         this.buildInfoExtractor = infoExtractor;

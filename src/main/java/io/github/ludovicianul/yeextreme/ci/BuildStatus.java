@@ -3,7 +3,7 @@ package io.github.ludovicianul.yeextreme.ci;
 public enum BuildStatus {
     SUCCESS("green"), FAILED("red"), BUILDING("blue");
 
-    private String color;
+    private final String color;
 
     BuildStatus(String color) {
         this.color = color;

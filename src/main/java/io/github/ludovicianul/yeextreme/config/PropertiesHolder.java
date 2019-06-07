@@ -26,6 +26,8 @@ public class PropertiesHolder {
 
     public static Optional<Task> bestCandidate;
 
+    public static Task alwaysTask;
+
     public static void reloadProperties(String location) throws URISyntaxException, IOException {
         LOGGER.info("reloading properties from {}", location);
         Path path = Paths.get(DEFAULT_CONFIG);
@@ -39,8 +41,20 @@ public class PropertiesHolder {
         parseColor(configLines);
         parseTasks(configLines);
         parseOtherProperties(configLines);
+        parseAlwaysTask(configLines);
 
-        LOGGER.warn("if you don't find all the supplied tasks and color in the above lists it means they were ignored. remember to start each task with 'task_' and each color with 'c_'");
+        LOGGER.warn("if you don't find all the supplied tasks and colors in the above lists it means they were ignored. remember to start each task with 'task_' and each color with 'c_'");
+    }
+
+    private static void parseAlwaysTask(List<String> configLines) {
+        Optional<String> alwaysString = configLines.stream().filter(line -> line.toLowerCase().equals("task_always")).findFirst();
+        if (alwaysString.isPresent()) {
+            alwaysTask = Task.fromString(alwaysString.get());
+            if (alwaysTask != null && !alwaysTask.isUrlTask()) {
+                LOGGER.error("task_always must be a value url [{}]. it will be ignored...", alwaysTask);
+                alwaysTask = null;
+            }
+        }
     }
 
     private static void parseOtherProperties(List<String> configLines) {
