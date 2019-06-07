@@ -20,30 +20,45 @@ public class Color {
      * @return
      */
     public static Color fromString(String input) {
+        try {
+            LOGGER.info("parsing color line [{}]", input);
+            String[] allDetails = splitLine(input);
+            String[] details = splitProperty(allDetails[1]);
+
+            Color color = new Color();
+            color.name = allDetails[0].toUpperCase();
+            color.r = Integer.parseInt(details[0]);
+            color.g = Integer.parseInt(details[1]);
+            color.b = Integer.parseInt(details[2]);
+            color.brightness = 100;
+            color.pulse = false;
+            if (details.length >= 4) {
+                color.brightness = Integer.parseInt(details[3]);
+            }
+            if (details.length >= 5) {
+                color.pulse = Boolean.parseBoolean(details[4]);
+            }
+            return color;
+        } catch (Exception e) {
+            LOGGER.error("something went wrong while parsing color [{}]", input);
+        }
+        return null;
+    }
+
+    private static String[] splitProperty(String allDetail) {
+        String[] details = allDetail.trim().split(",");
+        if (details.length > 5 || details.length < 3) {
+            throw new IllegalArgumentException("invalid color syntax");
+        }
+        return details;
+    }
+
+    private static String[] splitLine(String input) {
         String[] allDetails = input.trim().split("=");
         if (allDetails.length != 2) {
-            LOGGER.error("invalid color configuration [{}]", input);
-            return null;
+            throw new IllegalArgumentException("invalid color configuration");
         }
-        String[] details = allDetails[1].trim().split(",");
-        if (details.length > 5 || details.length < 3) {
-            LOGGER.info("invalid color syntax [{}]", input);
-            return null;
-        }
-        Color color = new Color();
-        color.name = allDetails[0];
-        color.r = Integer.parseInt(details[0]);
-        color.g = Integer.parseInt(details[1]);
-        color.b = Integer.parseInt(details[2]);
-        color.brightness = 100;
-        color.pulse = false;
-        if (details.length >= 4) {
-            color.brightness = Integer.parseInt(details[3]);
-        }
-        if (details.length >= 5) {
-            color.pulse = Boolean.parseBoolean(details[4]);
-        }
-        return color;
+        return allDetails;
     }
 
     public Color() {

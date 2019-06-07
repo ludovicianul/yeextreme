@@ -48,7 +48,7 @@ public class PropertiesHolder {
 
         configLines.stream().filter(line -> !line.startsWith("c_") && !line.startsWith("task_") && StringUtils.isNotEmpty(line) && !line.startsWith("#")).forEach(line -> {
             String[] parsed = line.split("=");
-            otherProperties.put(parsed[0], parsed[1]);
+            otherProperties.put(parsed[0].toUpperCase(), parsed[1]);
         });
 
         LOGGER.info("Other properties {}", otherProperties);

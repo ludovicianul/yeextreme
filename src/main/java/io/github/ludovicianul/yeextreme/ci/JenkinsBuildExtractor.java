@@ -17,7 +17,7 @@ public class JenkinsBuildExtractor implements BuildInfoExtractor {
     public BuildStatus getBuildStatus(String url) {
         RestTemplate template = new RestTemplate();
         String resultObject = template.getForObject(url, String.class);
-        LOGGER.info("jenkins result {}", resultObject);
+        LOGGER.debug("jenkins result {}", resultObject);
         
         JsonObject result = new Gson().fromJson(resultObject, JsonObject.class);
         if (result.get(BUILDING) != null && result.get(BUILDING).getAsString().equals("true")) {
