@@ -113,6 +113,8 @@ public class YeextremeApplication {
             } catch (Exception e) {
                 LOGGER.error("there was an error while sending the color to yeelight", e);
                 connectionAttempts++;
+                //reload in case something went wrong to the initial communication
+                YeelightCommunicator.reloadYeelight();
                 Thread.sleep(1000);
             }
         }
