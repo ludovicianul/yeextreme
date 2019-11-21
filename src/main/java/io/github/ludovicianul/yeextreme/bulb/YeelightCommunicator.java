@@ -38,15 +38,19 @@ public class YeelightCommunicator {
         }
     }
 
-    public static void sendColorToDevice(Color color) throws Exception {
-        device.stopFlow();
-        device.setPower(true);
-        device.setRGB(color.getR(), color.getG(), color.getB());
-        device.setBrightness(color.getBrightness());
-        if (color.isPulse()) {
-            startFlow(color.getR(), color.getG(), color.getB());
+    public static void sendColorToDevice(Color color) throws RuntimeException {
+        try {
+            device.stopFlow();
+            device.setPower(true);
+            device.setRGB(color.getR(), color.getG(), color.getB());
+            device.setBrightness(color.getBrightness());
+            if (color.isPulse()) {
+                startFlow(color.getR(), color.getG(), color.getB());
+            }
+            LOGGER.info("color {} sent successfully to the device {}", color, PropertiesHolder.getOtherProperties().getProperty(YEELIGHT_IP));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        LOGGER.info("color {} sent successfully to the device {}", color, PropertiesHolder.getOtherProperties().getProperty(YEELIGHT_IP));
     }
 
     /**

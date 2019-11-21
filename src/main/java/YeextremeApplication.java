@@ -15,8 +15,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URI;
 import java.time.LocalTime;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class YeextremeApplication {
     private static final Logger LOGGER = LoggerFactory.getLogger(YeextremeApplication.class);
@@ -110,6 +109,7 @@ public class YeextremeApplication {
         while (connectionAttempts < maxAttempts) {
             try {
                 LOGGER.info("attempt {} to communicate with Yeelight", connectionAttempts);
+                callYeelightCommunicator(colorToSendToYeelight);
                 YeelightCommunicator.sendColorToDevice(colorToSendToYeelight);
                 break;
             } catch (Exception e) {
@@ -120,6 +120,21 @@ public class YeextremeApplication {
                 Thread.sleep(1000);
             }
         }
+    }
+
+    private static void callYeelightCommunicator(Color color) {
+        final ExecutorService executor = Executors.newSingleThreadExecutor();
+        final Future<?> future = executor.submit(() -> YeelightCommunicator.sendColorToDevice(color));
+        executor.shutdown();
+        try {
+            future.get(5, TimeUnit.SECONDS);
+        } catch (InterruptedException | ExecutionException e) {
+            YeelightCommunicator.reloadYeelight();
+        } catch (TimeoutException e) {
+            YeelightCommunicator.reloadYeelight();
+            future.cancel(true);
+        }
+        executor.shutdownNow();
     }
 
     private static void startTelnet() {
