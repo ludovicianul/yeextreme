@@ -15,12 +15,10 @@ import org.slf4j.LoggerFactory;
  * Ensures the communication with the Yeelight bulb
  */
 public class YeelightCommunicator {
-    private static YeelightDevice device;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(YeelightCommunicator.class);
-
     private static final String YEELIGHT_IP = "yeelightIP";
     private static final String YEELIGHT_PORT = "yeelightPort";
+    private static YeelightDevice device;
 
     static {
         reloadYeelight();
@@ -36,7 +34,7 @@ public class YeelightCommunicator {
         try {
             device = new YeelightDevice(ipAddress, Integer.parseInt(port));
         } catch (Exception e) {
-            throw new IllegalArgumentException("cannot communicate with the device", e);
+            LOGGER.error("Exception while communication with the light bulb!", e);
         }
     }
 
