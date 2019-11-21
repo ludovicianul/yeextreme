@@ -39,10 +39,12 @@ The following colors are reserved for the CI build status:
 - ```RED``` for failed builds
 - ```GREEN``` for passed builds
 - ```BLUE``` for build in progress
+- ```ALL``` for signaling communication errors
 
 These colors does not need to be defined in the properties file as they default to the corresponding real color.
 **But** you can also override each of these colors using ```c_``` properties: ```c_red=r,g,b,brightness,pulse```.
 
+```ALL``` will make the device pulse into a pinky color in order to signal a communication problem.
 
 # Task priorities #
 The shorter time intervals will take priority over longer time intervals. 
