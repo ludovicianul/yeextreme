@@ -52,7 +52,7 @@ public class YeelightCommunicator {
     }
 
     /**
-     * This simulates a pulse flow transitioning from the supplied color to white and back with 1 seconds delay
+     * This simulates a pulse flow transitioning from the supplied color to gray and back with 1 seconds delay
      *
      * @param r red
      * @param g green
@@ -63,7 +63,7 @@ public class YeelightCommunicator {
         YeelightFlow yeelightFlow = new YeelightFlow(YeelightFlow.INFINITE_COUNT, YeelightFlowAction.RECOVER);
         YeelightColorTransition c1 = new YeelightColorTransition(r, g, b, 1000);
         YeelightSleepTransition sleep = new YeelightSleepTransition(1000);
-        YeelightColorTransition c2 = new YeelightColorTransition(254, 254, 254, 1000);
+        YeelightColorTransition c2 = new YeelightColorTransition(125, 125, 125, 1000);
         yeelightFlow.getTransitions().add(c1);
         yeelightFlow.getTransitions().add(sleep);
         yeelightFlow.getTransitions().add(c2);

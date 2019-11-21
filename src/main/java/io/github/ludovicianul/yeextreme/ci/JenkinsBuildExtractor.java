@@ -16,16 +16,21 @@ public class JenkinsBuildExtractor implements BuildInfoExtractor {
 
     @Override
     public BuildStatus getBuildStatus(String url) {
-        RestTemplate template = RestClientProvider.INSTANCE;
-        String resultObject = template.getForObject(url, String.class);
-        LOGGER.debug("jenkins result {}", resultObject);
+        try {
+            RestTemplate template = RestClientProvider.INSTANCE;
+            String resultObject = template.getForObject(url, String.class);
+            LOGGER.debug("jenkins result {}", resultObject);
 
-        JsonObject result = new Gson().fromJson(resultObject, JsonObject.class);
-        if (result.get(BUILDING) != null && result.get(BUILDING).getAsString().equals("true")) {
-            return BuildStatus.BUILDING;
-        } else if (result.get(RESULT).getAsString().toLowerCase().contains(SUCCESS)) {
-            return BuildStatus.SUCCESS;
+            JsonObject result = new Gson().fromJson(resultObject, JsonObject.class);
+            if (result.get(BUILDING) != null && result.get(BUILDING).getAsString().equals("true")) {
+                return BuildStatus.BUILDING;
+            } else if (result.get(RESULT).getAsString().toLowerCase().contains(SUCCESS)) {
+                return BuildStatus.SUCCESS;
+            }
+            return BuildStatus.FAILED;
+        } catch (Exception e) {
+            LOGGER.error("Something went wrong while getting build status", e);
+            return BuildStatus.ERROR;
         }
-        return BuildStatus.FAILED;
     }
 }

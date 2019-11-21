@@ -5,7 +5,8 @@ import io.github.ludovicianul.yeextreme.model.Color;
 public enum ReservedColor {
     RED(255, 0, 0, 80, false), GREEN(0, 255, 0, 80, false),
     BLUE(0, 0, 255, 80, true),
-    WHITE(254, 254, 254, 80, false);
+    WHITE(254, 254, 254, 80, false),
+    ALL(0, 0, 0, 20, true);
 
     private final Color color;
 

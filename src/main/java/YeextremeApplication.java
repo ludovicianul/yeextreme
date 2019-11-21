@@ -70,6 +70,8 @@ public class YeextremeApplication {
                 BuildStatus status = mapping.getBuildInfoExtractor().getBuildStatus(task.getUrl());
                 LOGGER.info("build status {}", status);
                 colorName = status.getColorName();
+            } else {
+                LOGGER.warn("CI server not supported {}", task.getCiServer());
             }
         }
 

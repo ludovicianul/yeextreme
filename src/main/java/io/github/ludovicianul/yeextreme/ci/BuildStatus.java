@@ -1,7 +1,7 @@
 package io.github.ludovicianul.yeextreme.ci;
 
 public enum BuildStatus {
-    SUCCESS("green"), FAILED("red"), BUILDING("blue");
+    SUCCESS("green"), FAILED("red"), BUILDING("blue"), ERROR("all");
 
     private final String color;
 
