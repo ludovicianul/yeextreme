@@ -129,8 +129,10 @@ public class YeextremeApplication {
         try {
             future.get(5, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException e) {
+            LOGGER.warn("Interrupted!", e);
             YeelightCommunicator.reloadYeelight();
-        } catch (TimeoutException e) {
+        } catch (Exception e) {
+            LOGGER.warn("Generic exception!", e);
             YeelightCommunicator.reloadYeelight();
             future.cancel(true);
         }
