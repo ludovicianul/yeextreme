@@ -33,6 +33,7 @@ public class YeelightCommunicator {
         }
         try {
             device = new YeelightDevice(ipAddress, Integer.parseInt(port));
+            device.setPower(true);
         } catch (Exception e) {
             LOGGER.error("Exception while communication with the light bulb!", e);
         }
@@ -41,7 +42,6 @@ public class YeelightCommunicator {
     public static void sendColorToDevice(Color color) throws RuntimeException {
         try {
             device.stopFlow();
-            device.setPower(true);
             device.setRGB(color.getR(), color.getG(), color.getB());
             device.setBrightness(color.getBrightness());
             if (color.isPulse()) {

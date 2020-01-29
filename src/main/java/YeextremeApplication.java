@@ -27,7 +27,7 @@ public class YeextremeApplication {
 
     private static final String MAX_CONN_ATTEMPTS = "10";
     private static final String DEFAULT_TELNET_PORT = "8888";
-    private static final String MILLIS_TO_PAUSE_CHECLING = "15";
+    private static final String SECONDS_TO_PAUSE_CHECLING = "15";
 
     public static void main(String[] args) throws Exception {
         String propsLocation = null;
@@ -45,7 +45,7 @@ public class YeextremeApplication {
 
 
     private static void startMonitoring() throws Exception {
-        int secondsToPause = Integer.parseInt(PropertiesHolder.getOtherProperties().getProperty(SECONDS_TO_PAUSE_CHECKING, MILLIS_TO_PAUSE_CHECLING)) * 1000;
+        int secondsToPause = Integer.parseInt(PropertiesHolder.getOtherProperties().getProperty(SECONDS_TO_PAUSE_CHECKING, SECONDS_TO_PAUSE_CHECLING)) * 1000;
         LOGGER.info("millis to pause between checks {}", secondsToPause);
 
         while (true) {
@@ -123,9 +123,7 @@ public class YeextremeApplication {
     }
 
     private static void callYeelightCommunicator(Color color) {
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
         final Future<?> future = executor.submit(() -> YeelightCommunicator.sendColorToDevice(color));
-        executor.shutdown();
         try {
             future.get(5, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException e) {
@@ -134,9 +132,9 @@ public class YeextremeApplication {
         } catch (Exception e) {
             LOGGER.warn("Generic exception!", e);
             YeelightCommunicator.reloadYeelight();
+        } finally {
             future.cancel(true);
         }
-        executor.shutdownNow();
     }
 
     private static void startTelnet() {
