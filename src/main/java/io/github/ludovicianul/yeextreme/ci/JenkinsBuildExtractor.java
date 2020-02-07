@@ -22,7 +22,7 @@ public class JenkinsBuildExtractor implements BuildInfoExtractor {
             LOGGER.debug("jenkins result {}", resultObject);
 
             JsonObject result = new Gson().fromJson(resultObject, JsonObject.class);
-            if (result.get(BUILDING) != null && result.get(BUILDING).getAsString().equals("true")) {
+            if (result.get(BUILDING) != null && result.get(BUILDING).getAsString().equalsIgnoreCase("true")) {
                 return BuildStatus.BUILDING;
             } else if (result.get(RESULT).getAsString().toLowerCase().contains(SUCCESS)) {
                 return BuildStatus.SUCCESS;
