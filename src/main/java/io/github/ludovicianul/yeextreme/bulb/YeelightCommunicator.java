@@ -42,7 +42,7 @@ public class YeelightCommunicator {
 
     public static void sendColorToDevice(Color color) throws RuntimeException {
         try {
-            if (color.equals(currentColor)) {
+            if (!color.equals(currentColor)) {
                 device.stopFlow();
                 device.setRGB(color.getR(), color.getG(), color.getB());
                 device.setBrightness(color.getBrightness());
