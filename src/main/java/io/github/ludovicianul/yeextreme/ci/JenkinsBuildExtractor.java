@@ -10,6 +10,8 @@ import org.springframework.web.client.RestTemplate;
 public class JenkinsBuildExtractor implements BuildInfoExtractor {
     private static final String BUILDING = "building";
     private static final String SUCCESS = "success";
+    private static final String UNSTABLE = "unstable";
+
     private static final String RESULT = "result";
     private static final Logger LOGGER = LoggerFactory.getLogger(JenkinsBuildExtractor.class);
 
@@ -26,6 +28,8 @@ public class JenkinsBuildExtractor implements BuildInfoExtractor {
                 return BuildStatus.BUILDING;
             } else if (result.get(RESULT).getAsString().toLowerCase().contains(SUCCESS)) {
                 return BuildStatus.SUCCESS;
+            } else if (result.get(RESULT).getAsString().toLowerCase().contains(UNSTABLE)) {
+                return BuildStatus.UNSTABLE;
             }
             return BuildStatus.FAILED;
         } catch (Exception e) {

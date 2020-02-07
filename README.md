@@ -39,6 +39,7 @@ The following colors are reserved for the CI build status:
 - ```RED``` for failed builds
 - ```GREEN``` for passed builds
 - ```BLUE``` for build in progress
+- ````YELLOW```` for unstable builds
 - ```ALL``` for signaling communication errors
 
 These colors does not need to be defined in the properties file as they default to the corresponding real color.

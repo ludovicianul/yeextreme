@@ -6,6 +6,7 @@ public enum ReservedColor {
     RED(255, 0, 0, 80, false), GREEN(0, 255, 0, 80, false),
     BLUE(0, 0, 255, 80, true),
     WHITE(254, 254, 254, 80, false),
+    YELLOW(255, 255, 0, 80, true),
     ALL(10, 0, 5, 20, true);
 
     private final Color color;
