@@ -3,6 +3,8 @@ package io.github.ludovicianul.yeextreme.model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
+
 public class Color {
     private static final Logger LOGGER = LoggerFactory.getLogger(Color.class);
 
@@ -12,6 +14,18 @@ public class Color {
     private int b;
     private int brightness;
     private boolean pulse;
+
+    private Color() {
+    }
+
+    public Color(String name, int r, int g, int b, int brightness, boolean pulse) {
+        this.name = name;
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.brightness = brightness;
+        this.pulse = pulse;
+    }
 
     /**
      * Complete format for a color entry is: c_name=int,int,int,int,boolean
@@ -61,16 +75,22 @@ public class Color {
         return allDetails;
     }
 
-    private Color() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Color color = (Color) o;
+        return r == color.r &&
+                g == color.g &&
+                b == color.b &&
+                brightness == color.brightness &&
+                pulse == color.pulse &&
+                name.equals(color.name);
     }
 
-    public Color(String name, int r, int g, int b, int brightness, boolean pulse) {
-        this.name = name;
-        this.r = r;
-        this.g = g;
-        this.b = b;
-        this.brightness = brightness;
-        this.pulse = pulse;
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, r, g, b, brightness, pulse);
     }
 
     public String getName() {

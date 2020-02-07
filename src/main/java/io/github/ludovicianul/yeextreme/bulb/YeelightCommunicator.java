@@ -19,6 +19,7 @@ public class YeelightCommunicator {
     private static final String YEELIGHT_IP = "yeelightIP";
     private static final String YEELIGHT_PORT = "yeelightPort";
     private static YeelightDevice device;
+    private static Color currentColor;
 
     static {
         reloadYeelight();
@@ -41,13 +42,18 @@ public class YeelightCommunicator {
 
     public static void sendColorToDevice(Color color) throws RuntimeException {
         try {
-            device.stopFlow();
-            device.setRGB(color.getR(), color.getG(), color.getB());
-            device.setBrightness(color.getBrightness());
-            if (color.isPulse()) {
-                startFlow(color.getR(), color.getG(), color.getB());
+            if (color.equals(currentColor)) {
+                device.stopFlow();
+                device.setRGB(color.getR(), color.getG(), color.getB());
+                device.setBrightness(color.getBrightness());
+                if (color.isPulse()) {
+                    startFlow(color.getR(), color.getG(), color.getB());
+                }
+                LOGGER.info("color {} sent successfully to the device {}", color, PropertiesHolder.getOtherProperties().getProperty(YEELIGHT_IP));
+                currentColor = color;
+            } else {
+                LOGGER.info("same color {}. no need to change", color);
             }
-            LOGGER.info("color {} sent successfully to the device {}", color, PropertiesHolder.getOtherProperties().getProperty(YEELIGHT_IP));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

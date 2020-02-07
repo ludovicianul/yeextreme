@@ -15,7 +15,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URI;
 import java.time.LocalTime;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class YeextremeApplication {
     private static final Logger LOGGER = LoggerFactory.getLogger(YeextremeApplication.class);
@@ -28,6 +31,8 @@ public class YeextremeApplication {
     private static final String MAX_CONN_ATTEMPTS = "10";
     private static final String DEFAULT_TELNET_PORT = "8888";
     private static final String SECONDS_TO_PAUSE_CHECLING = "15";
+
+    private static final int DELAY_BETWEEN_ATTEMPTS = 10000;
 
     public static void main(String[] args) throws Exception {
         String propsLocation = null;
@@ -115,23 +120,18 @@ public class YeextremeApplication {
             } catch (Exception e) {
                 LOGGER.error("there was an error while sending the color to yeelight", e);
                 connectionAttempts++;
+                Thread.sleep(DELAY_BETWEEN_ATTEMPTS);
+
                 //reload in case something went wrong to the initial communication
                 YeelightCommunicator.reloadYeelight();
-                Thread.sleep(1000);
             }
         }
     }
 
-    private static void callYeelightCommunicator(Color color) {
+    private static void callYeelightCommunicator(Color color) throws Exception {
         final Future<?> future = executor.submit(() -> YeelightCommunicator.sendColorToDevice(color));
         try {
             future.get(5, TimeUnit.SECONDS);
-        } catch (InterruptedException | ExecutionException e) {
-            LOGGER.warn("Interrupted!", e);
-            YeelightCommunicator.reloadYeelight();
-        } catch (Exception e) {
-            LOGGER.warn("Generic exception!", e);
-            YeelightCommunicator.reloadYeelight();
         } finally {
             future.cancel(true);
         }
