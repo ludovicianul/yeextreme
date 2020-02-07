@@ -81,8 +81,8 @@ There are situations when you will run **Yeextreme** on a remote box. You can te
 - ```quit``` - will close the connection
 
 # Running the app ##
-**Yeextreme** is built as an executable jar. Just do: ```./yeelight-1.1.jar``` (or ```java -jar yeelight-1.1.jar```).
-Check the Releases tab for latest version. Latest version here: https://github.com/ludovicianul/yeextreme/releases/download/v1.1/yeextreme-1.1.jar
+**Yeextreme** is built as an executable jar. Just do: ```./yeelight-1.2.jar``` (or ```java -jar yeelight-1.2.jar```).
+Check the Releases tab for latest version. Latest version here: https://github.com/ludovicianul/yeextreme/releases/download/v1.2/yeextreme-1.2.jar
 
 
 # Build from sources #
