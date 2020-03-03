@@ -1,3 +1,5 @@
+![Java CI](https://github.com/ludovicianul/yeextreme/workflows/Java%20CI/badge.svg?branch=master)
+
 # Yeextreme #
 In the era of overwhelming digital notifications (Slack, Teams, Mobile Phones, Emails, etc) I'm a strong believer in visual and instant feedback.
 This is why I think Extreme Feedback Devices are essential for every development team. Especially in distributed scenarios when you have lots of teams working on the same codebase.
